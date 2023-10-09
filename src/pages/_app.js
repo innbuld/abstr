@@ -1,5 +1,6 @@
 import "../../styles/globals.css";
 import "../../styles/custom.css";
+
 import "../../styles/topcorner.css";
 import Navbar from "../components/navbar";
 import { Inter } from "next/font/google";

@@ -1,14 +1,18 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, PureComponent } from "react";
 import Navbar from "@/components/navbar";
-import { MdRemoveRedEye } from "react-icons/md";
-import { MdContentCopy } from "react-icons/md";
-import { PureComponent } from "react";
-import { useCallback } from "react";
-import LineChart from "@/components/line";
-import DoughnutChart from "@/components/doughnut";
+
 import { shortenAddress } from "@/utils/shortenAddress";
-import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
-import { Chart } from "chart.js";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { AiFillCodepenCircle } from "react-icons/ai";
 import { HiMiniPlusSmall } from "react-icons/hi2";
@@ -16,6 +20,8 @@ import { LiaEthereum } from "react-icons/lia";
 import { GoInfo } from "react-icons/go";
 import { useAddress } from "@thirdweb-dev/react";
 import { ThirdwebSDK } from "@thirdweb-dev/sdk";
+
+
 import {
   Table,
   TableHeader,
@@ -103,10 +109,55 @@ const port = () => {
   );
 
   // Get the native currency balance e.g. Ether on Ethereum
-
-
   
 
+
+
+
+  const data = [
+    {
+      name: "Page A",
+      uv: 4000,
+      pv: 2400,
+      amt: 2400,
+    },
+    {
+      name: "Page B",
+      uv: 3000,
+      pv: 1398,
+      amt: 2210,
+    },
+    {
+      name: "Page C",
+      uv: 2000,
+      pv: 9800,
+      amt: 2290,
+    },
+    {
+      name: "Page D",
+      uv: 2780,
+      pv: 3908,
+      amt: 2000,
+    },
+    {
+      name: "Page E",
+      uv: 1890,
+      pv: 4800,
+      amt: 2181,
+    },
+    {
+      name: "Page F",
+      uv: 2390,
+      pv: 3800,
+      amt: 2500,
+    },
+    {
+      name: "Page G",
+      uv: 3490,
+      pv: 4300,
+      amt: 2100,
+    },
+  ];
 
   return (
     <div>
@@ -256,12 +307,37 @@ const port = () => {
         {/* Left side: Large Graph */}
         <div className="w-full md:w-2/3 p-4 md:p-6">
           <div className="h-96 rounded-lg mb-60">
-            <img src="./graph.png"></img>
+            <ResponsiveContainer width="100%" height="100%" className="mt-16">
+              <LineChart
+                width={500}
+                height={300}
+                data={data}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="pv"
+                  stroke="
+                  #9419ca"
+                  activeDot={{ r: 8 }}
+                />
+                <Line type="monotone" dataKey="uv" stroke="#1FDFB8" />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
         {/* Right side: Four Boxes in a Column */}
-        <div className="w-full md:w-1/3 p-4 md:p-6">
+        <div className="w-full md:w-1/3  p-4 md:p-6">
           <div className="flex flex-col space-y-4">
             {/* Box 1 */}
             <div className="bg-[#bd63ec] text-white rounded-lg p-4">
@@ -390,13 +466,12 @@ const port = () => {
           </span>
         </div>
 
-        <div className="flex flex-col ">
+        <div className="flex flex-col bg-table ">
           <Table
             selectionMode="single"
             defaultSelectedKeys={["2"]}
-            color = 'danger'
             aria-label="Example static collection table"
-            className="bg-red-500"
+            className="bg-table"
           >
             <TableHeader>
               <TableColumn width="40%">ASSETS</TableColumn>
@@ -446,7 +521,6 @@ const port = () => {
               </TableRow>
             </TableBody>
           </Table>
-         
         </div>
       </div>
     </div>
