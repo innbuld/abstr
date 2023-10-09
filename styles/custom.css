@@ -1,0 +1,12 @@
+/* styles/custom.css */
+.custom-modal-width {
+    width: 80%; /* Adjust the width as needed */
+    max-width: none; /* Ensure there's no max-width constraint */
+  }
+  
+  .gradient-text {
+    background: linear-gradient(#00F58B, #2EF2FF); /* Define your gradient colors */
+    -webkit-background-clip: text; /* Clip the gradient to the text */
+    background-clip: text;
+    color: transparent; /* Hide the original text color */
+  }

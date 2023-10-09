@@ -1,0 +1,10 @@
+/* In your CSS file or tailwind.config.js */
+.bg-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30%; /* Adjust the width as needed */
+    height: 10%; /* Full height of the page */
+    background-color: #6A4171; /* Your desired background color */
+  }
+  
