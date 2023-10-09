@@ -213,7 +213,7 @@ export default function Home() {
           </span>
           <div className="mt-9">
             <Button className=" rounded-full bg-gradient-to-r from-[#8092F1] to-[#FF00E6]">
-              Explore Stats
+              <Link href="./dashboard" color="foreground"> Explore Stats</Link>
             </Button>
           </div>
         </div>
