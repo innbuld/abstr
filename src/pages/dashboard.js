@@ -443,23 +443,7 @@ const port = () => {
               </TableRow>
             </TableBody>
           </Table>
-          {/* <RadioGroup 
-                              label="Selection color"
-                              orientation="horizontal"
-                              value={selectedColor} 
-                              onValueChange={setSelectedColor}
-                            >
-                              {colors.map((color) => (
-                                <Radio
-                                  key={color}
-                                  color={color}  
-                                  value={color}
-                                  className="capitalize"
-                                >
-                                  {color}
-                                </Radio>  
-                              ))}
-                            </RadioGroup> */}
+         
         </div>
       </div>
     </div>

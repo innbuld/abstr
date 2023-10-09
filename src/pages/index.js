@@ -193,7 +193,7 @@ export default function Home() {
 
   return (
     <div className="flex justify-between py-6 px-16 ">
-      <div className="flex flex-col justify-center  w-[52%] h-[100%] bg-[url('../public/great.png')] bg-cover bg-no-repeat">
+      <div className="flex flex-col justify-center  w-[52%] h-[100%]  bg-cover bg-no-repeat">
         <div className="flex flex-col  mt-32">
           <span className="text-[#1cdfff] font-golos text-[25px] font-normal">
             Everything you really
