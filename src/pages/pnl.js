@@ -22,7 +22,7 @@ const pnl = () => {
 
   // Define the function to fetch wallet portfolio
   const getpnl = async () => {
-    const url = `https://api.app-mobula.com/api/1/wallet/portfolio?wallet=${address}`;
+    const url = `https://api.app-mobula.com/api/1/wallet/portfolio?wallet=${address}&pnl=true`;
     const options = {
       method: "GET",
       headers: {
@@ -92,13 +92,16 @@ const pnl = () => {
             {data?.data?.assets?.map((item, i) => (
               <TableRow key={i}>
                 <TableCell>
-                  <img
-                    src={item.asset.logo}
-                    alt={item.asset.name}
-                    width="32"
-                    height="32"
-                    className="rounded-lg"
-                  /> {item.asset.name}
+                <div className="flex items-center space-x-2">
+                    <img
+                      src={item.asset.logo}
+                      alt={item.asset.name}
+                      width="32"
+                      height="32"
+                      className="rounded-lg"
+                    />
+                    <span className="text-black">{item.asset.name}</span>
+                  </div>
                 </TableCell>
                 <TableCell className="text-black">{item.price}</TableCell>
                 <TableCell className="text-black">{item.token_balance}</TableCell>
@@ -125,13 +128,3 @@ export default pnl;
 
 
 
-// <div className="flex items-center space-x-2">
-//                     <img
-//                       src={item.asset.logo}
-//                       alt={item.asset.name}
-//                       width="32"
-//                       height="32"
-//                       className="rounded-lg"
-//                     />
-//                     <span className="text-black">{item.asset.name}</span>
-//                   </div>

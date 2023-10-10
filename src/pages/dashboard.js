@@ -142,7 +142,7 @@ const port = () => {
   // Define the function to fetch wallet portfolio
   const getpnl = async () => {
     const url =
-    `https://api.app-mobula.com/api/1/wallet/portfolio?wallet=${address}`;
+    `https://api.app-mobula.com/api/1/wallet/portfolio?wallet=${address}&pnl=true`;
     const options = {
       method: "GET",
       headers: {
@@ -508,11 +508,11 @@ const port = () => {
           <span className="font-golos text-[20px] font-medium text-white">
             Token
           </span>
-          <span className="font-golos font-medium text-white">$16,000</span>
+          <span className="font-golos font-medium text-white">${datas?.data?.balance_usd ?? "0.00"}</span>
         </div>
         <div className="flex flex-row justify-between items-center">
           <span className=""></span>
-          <span className="font-golos text-[14px] text-[#a3a9b5]">
+          {/* <span className="font-golos text-[14px] text-[#a3a9b5]">
             Hide tokens less than{" "}
             <Dropdown>
               <DropdownTrigger>
@@ -537,77 +537,48 @@ const port = () => {
                 <DropdownItem key="$10"> $10</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          </span>
+          </span> */}
         </div>
 
+       
         <div className="flex flex-col bg-table ">
-          <Table
-            selectionMode="single"
-            defaultSelectedKeys={["2"]}
-            aria-label="Example static collection table"
-            className="bg-table"
-          >
-            <TableHeader>
-              <TableColumn width="40%">ASSETS</TableColumn>
-              <TableColumn typeof="number">PRICE</TableColumn>
-              <TableColumn>AMOUNT</TableColumn>
-              <TableColumn>VALUE</TableColumn>
-              <TableColumn>AVG COST</TableColumn>
-              <TableColumn>REALIZED PNL</TableColumn>
-              <TableColumn>UNREALIZED PNL</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {/* <TableRow key="1">
-                <TableCell>Tony Reichert</TableCell>
-                <TableCell>$0.9996</TableCell>
-                <TableCell>6,477.2803</TableCell>
-                <TableCell>JFJ Reichert</TableCell>
-                <TableCell>$1.0022</TableCell>
-                <TableCell>Active</TableCell>
-                <TableCell>Active</TableCell>
+        <Table
+          selectionMode="single"
+          defaultSelectedKeys={["2"]}
+          aria-label="Example static collection table"
+          className="bg-table"
+        >
+          <TableHeader>
+            <TableColumn width="40%">ASSETS</TableColumn>
+            <TableColumn typeof="number">PRICE</TableColumn>
+            <TableColumn>AMOUNT</TableColumn>
+            <TableColumn>REALIZED PNL</TableColumn>
+            <TableColumn>UNREALIZED PNL</TableColumn>
+          </TableHeader>
+          <TableBody className="text-black">
+            {datass?.data?.assets?.map((item, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                <div className="flex items-center space-x-2">
+                    <img
+                      src={item.asset.logo}
+                      alt={item.asset.name}
+                      width="32"
+                      height="32"
+                      className="rounded-lg"
+                    />
+                    <span className="text-black">{item.asset.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-black">{item.price}</TableCell>
+                <TableCell className="text-black">{item.token_balance}</TableCell>
+                <TableCell className="text-black">{item.realized_pnl}</TableCell>
+                <TableCell className="text-black">{item.unrealized_pnl}</TableCell>
               </TableRow>
-              <TableRow key="2">
-                <TableCell>Tony Reichert</TableCell>
-                <TableCell>$0.2410</TableCell>
-                <TableCell>17,115.3234</TableCell>
-                <TableCell>WW Reichert</TableCell>
-                <TableCell>$0</TableCell>
-                <TableCell>Active</TableCell>
-                <TableCell>Active</TableCell>
-              </TableRow>
-              <TableRow key="3">
-                <TableCell>Tony Reichert</TableCell>
-                <TableCell>CEO</TableCell>
-                <TableCell>Active</TableCell>
-                <TableCell>XX Reichert</TableCell>
-                <TableCell>CEO</TableCell>
-                <TableCell>Active</TableCell>
-                <TableCell>Active</TableCell>
-              </TableRow>
-              <TableRow key="4">
-                <TableCell>Tony Reichert</TableCell>
-                <TableCell>CEO</TableCell>
-                <TableCell>Active</TableCell>
-                <TableCell>NN Reichert</TableCell>
-                <TableCell>CEO</TableCell>
-                <TableCell>Active</TableCell>
-                <TableCell>Active</TableCell>
-              </TableRow> */}
-
-              {array.map((item, i) => (
-                <TableRow key={i}>
-                  <TableCell>{item}</TableCell>
-                  <TableCell>$0.9996</TableCell>
-                  <TableCell>6,477.2803</TableCell>
-                  <TableCell>JFJ Reichert</TableCell>
-                  <TableCell>$1.0022</TableCell>
-                  <TableCell>Active</TableCell>
-                  <TableCell>Active</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       </div>
     </div>
   );
