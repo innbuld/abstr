@@ -142,7 +142,7 @@ const port = () => {
   // Define the function to fetch wallet portfolio
   const getpnl = async () => {
     const url =
-      "https://api.app-mobula.com/api/1/wallet/portfolio?wallet=0x0383D46c72d0571E0169769fBe4f63B3d40A5FEe";
+    `https://api.app-mobula.com/api/1/wallet/portfolio?wallet=${address}`;
     const options = {
       method: "GET",
       headers: {
