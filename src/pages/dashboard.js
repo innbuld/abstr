@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, PureComponent } from "react";
 import Navbar from "@/components/navbar";
-
+import MobulaData from "@/components/fetchbaldata";
 import { shortenAddress } from "@/utils/shortenAddress";
 import {
   LineChart,
@@ -20,8 +20,6 @@ import { LiaEthereum } from "react-icons/lia";
 import { GoInfo } from "react-icons/go";
 import { useAddress } from "@thirdweb-dev/react";
 import { ThirdwebSDK } from "@thirdweb-dev/sdk";
-
-
 import {
   Table,
   TableHeader,
@@ -29,8 +27,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  RadioGroup,
-  Radio,
   Link,
   Modal,
   ModalContent,
@@ -38,20 +34,12 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Progress,
-  Tabs,
-  Tab,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
   Button,
   Input,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Avatar,
 } from "@nextui-org/react";
 
 const port = () => {
@@ -109,10 +97,88 @@ const port = () => {
   );
 
   // Get the native currency balance e.g. Ether on Ethereum
-  
 
+  const [datas, setdata] = useState(); // state action for data
 
+  // Define the function to fetch wallet history
+  const getWalletHistory = async () => {
+    const url = `https://api.app-mobula.com/api/1/wallet/history?wallet=${address}`; //
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+      },
+    };
 
+    try {
+      // Use the fetch API to make the request
+      const response = await fetch(url, options);
+
+      // Check if the response status is OK (200)
+      if (response.ok) {
+        // Parse the response JSON
+        const data = await response.json();
+        setdata(data); //storing data here for use in frontend & back
+        console.log(data);
+      } else {
+        // If the response status is not OK, log the error
+        console.error("Error fetching wallet history:", response.statusText);
+      }
+    } catch (err) {
+      // Log any other errors that may occur
+      console.error("Error fetching wallet history:", err);
+    }
+  };
+
+  // Use the useEffect hook to call the getWalletHistory function when the component mounts
+  useEffect(() => {
+    getWalletHistory();
+  }, [address]); // Empty dependency array ensures that the effect runs only once when the component mounts, anytime address get changes, it'll run to get connected wall
+
+  // portfolio
+
+  const [datass, setdatas] = useState(); // state action for data
+
+  // Define the function to fetch wallet portfolio
+  const getpnl = async () => {
+    const url =
+      "https://api.app-mobula.com/api/1/wallet/portfolio?wallet=0x0383D46c72d0571E0169769fBe4f63B3d40A5FEe";
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+      },
+    };
+
+    try {
+      // Use the fetch API to make the request
+      const response = await fetch(url, options);
+
+      // Check if the response status is OK (200)
+      if (response.ok) {
+        // Parse the response JSON
+        const data = await response.json();
+        setdatas(data);
+        console.log(data);
+      } else {
+        // If the response status is not OK, log the error
+        console.error("Error fetching wallet history:", response.statusText);
+      }
+    } catch (err) {
+      // Log any other errors that may occur
+      console.error("Error fetching wallet history:", err);
+    }
+  };
+
+  // Use the useEffect hook to call the getWalletHistory function when the component mounts
+  useEffect(() => {
+    getpnl();
+  }, [address]); // Empty dependency array ensures that the effect runs only once when the component mounts
+
+  ///tablke
+
+  const array = [1, 2, 3, 4, 5, 6];
+  const arrays2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const data = [
     {
@@ -348,7 +414,9 @@ const port = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[18px] font-golos">$16,649.973</p>
+                  <p className="text-[20px] font-golos">
+                    ${datas?.data?.balance_usd ?? "0.00"}
+                  </p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
                     <p>Text 1</p>
                     <p>Text 2</p>
@@ -369,7 +437,7 @@ const port = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[18px] font-golos">$16,649.973</p>
+                  <p className="text-[20px] font-golos">$16,649.973</p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
                     <p>Text 1</p>
                     <p>Text 2</p>
@@ -390,7 +458,9 @@ const port = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[18px] font-golos">$7000.0120</p>
+                  <p className="text-[20px] font-golos">
+                    ${datass?.data?.total_realized_pnl ?? "0.00"}
+                  </p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
                     <p>Text 1</p>
                     <p>Text 2</p>
@@ -411,7 +481,9 @@ const port = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[18px] font-golos">-$3,265.6323</p>
+                  <p className="text-[20px] font-golos">
+                    ${datass?.data?.total_unrealized_pnl ?? "0.00"}
+                  </p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
                     <p>Text 1</p>
                     <p>Text 2</p>
@@ -483,7 +555,7 @@ const port = () => {
               <TableColumn>UNREALIZED PNL</TableColumn>
             </TableHeader>
             <TableBody>
-              <TableRow key="1">
+              {/* <TableRow key="1">
                 <TableCell>Tony Reichert</TableCell>
                 <TableCell>$0.9996</TableCell>
                 <TableCell>6,477.2803</TableCell>
@@ -518,7 +590,19 @@ const port = () => {
                 <TableCell>CEO</TableCell>
                 <TableCell>Active</TableCell>
                 <TableCell>Active</TableCell>
-              </TableRow>
+              </TableRow> */}
+
+              {array.map((item, i) => (
+                <TableRow key={i}>
+                  <TableCell>{item}</TableCell>
+                  <TableCell>$0.9996</TableCell>
+                  <TableCell>6,477.2803</TableCell>
+                  <TableCell>JFJ Reichert</TableCell>
+                  <TableCell>$1.0022</TableCell>
+                  <TableCell>Active</TableCell>
+                  <TableCell>Active</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>

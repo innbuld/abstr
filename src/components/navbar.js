@@ -2,6 +2,7 @@
 
 import react from "react";
 import Link from "next/link";
+import { useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -42,6 +43,11 @@ const customDarkTheme = darkTheme({
 });
 
 export default function Navbar() {
+
+  
+
+
+  
   return (
     <div className="bg-[#070219] flex justify-between items-center p-4">
       <div className="px-8">
