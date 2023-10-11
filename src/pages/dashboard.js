@@ -54,8 +54,17 @@ const port = () => {
       setListOfAddresses([address]);
     }
   }, [address]);
-  
-  //
+
+  // handle dele
+
+  const handleDeleteAddress = (addressToDelete) => {
+    if (window.confirm(`Are you sure you want to delete address ${addressToDelete}?`)) {
+      const updatedList = listOfAddresses.filter((item) => item !== addressToDelete);
+      setListOfAddresses(updatedList);
+      localStorage.setItem("addresses", JSON.stringify(updatedList)); // Update the local storage
+    }
+  };
+
 
   const isInvalid = useMemo(() => {
     if (value === "") return false;
@@ -73,6 +82,9 @@ const port = () => {
     setCurrentAddress(selectedAddress);
     localStorage.setItem("selectedAddress", selectedAddress);
   };
+
+
+  
 
 
   const [currentAddress, setCurrentAddress] = useState("");
@@ -293,6 +305,12 @@ const port = () => {
                                 <span className="font-medium">
                                   {shortenAddress(item)}
                                 </span>
+                                <button
+                        onClick={() => handleDeleteAddress(item)}
+                        className="ml-2 text-red-500"
+                      >
+                        Delete
+                      </button>
                               </span>
                             </DropdownItem>
                           ))}
