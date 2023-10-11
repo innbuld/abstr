@@ -25,9 +25,27 @@ export default function transaction() {
   //             console.log(data.data.data, data.data ,"show up") }
   //         })
 
+  const [currentAddress, setCurrentAddress] = useState("");
+
+  useEffect(() => {
+    // This code will run when the component is mounted
+
+    setCurrentAddress(address);
+    console.log("Component mounted", address);
+
+    // You can perform any side effects or tasks here
+    // Remember that without a dependency array, this will run every time the component renders
+  }, [address]);
+
+
+
+
+
+
   // Define the function to fetch wallet portfolio
+  
   const getTxn = async () => {
-    const url = `https://api.app-mobula.com/api/1/wallet/transactions?wallet=${address}&blockchain=Ethereum&limit=100&offset=0&order=asc`;
+    const url = `https://api.app-mobula.com/api/1/wallet/transactions?wallet=${currentAddress}&blockchain=Ethereum&limit=100&offset=0&order=asc`;
 
     const options = {
       method: "GET",
@@ -65,7 +83,7 @@ export default function transaction() {
   // Use the useEffect hook to call the getWalletHistory function when the component mounts
   useEffect(() => {
     getTxn();
-  }, [address]); // Empty dependency array ensures that the effect runs only once when the component mounts
+  }, [currentAddress]); // Empty dependency array ensures that the effect runs only once when the component mounts
 
   return (
     <div>

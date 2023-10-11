@@ -61,6 +61,27 @@ const port = () => {
     setListOfAddresses(newArray);
   };
 
+
+  const handleAddressSelect = (selectedAddress) => {
+    setCurrentAddress(selectedAddress);
+  };
+
+
+  const [currentAddress, setCurrentAddress] = useState("");
+
+  useEffect(() => {
+    // This code will run when the component is mounted
+
+    setCurrentAddress(address);
+    console.log("Component mounted", address);
+
+    // You can perform any side effects or tasks here
+    // Remember that without a dependency array, this will run every time the component renders
+  }, [address]);
+
+
+
+  
   const [selectedKeys, setSelectedKeys] = useState(new Set(["All Chain"]));
 
   const [selectedKe, setSelectedKe] = useState(new Set(["$1"])); // for asset tbl 1
@@ -102,7 +123,7 @@ const port = () => {
 
   // Define the function to fetch wallet history
   const getWalletHistory = async () => {
-    const url = `https://api.app-mobula.com/api/1/wallet/history?wallet=${address}`; //
+    const url = `https://api.app-mobula.com/api/1/wallet/history?wallet=${currentAddress}`; //
     const options = {
       method: "GET",
       headers: {
@@ -133,7 +154,7 @@ const port = () => {
   // Use the useEffect hook to call the getWalletHistory function when the component mounts
   useEffect(() => {
     getWalletHistory();
-  }, [address]); // Empty dependency array ensures that the effect runs only once when the component mounts, anytime address get changes, it'll run to get connected wall
+  }, [currentAddress]); // Empty dependency array ensures that the effect runs only once when the component mounts, anytime address get changes, it'll run to get connected wall
 
   // portfolio
 
@@ -142,7 +163,7 @@ const port = () => {
   // Define the function to fetch wallet portfolio
   const getpnl = async () => {
     const url =
-    `https://api.app-mobula.com/api/1/wallet/portfolio?wallet=${address}&pnl=true`;
+    `https://api.app-mobula.com/api/1/wallet/portfolio?wallet=${currentAddress}&pnl=true`;
     const options = {
       method: "GET",
       headers: {
@@ -173,7 +194,7 @@ const port = () => {
   // Use the useEffect hook to call the getWalletHistory function when the component mounts
   useEffect(() => {
     getpnl();
-  }, [address]); // Empty dependency array ensures that the effect runs only once when the component mounts
+  }, [currentAddress]); // Empty dependency array ensures that the effect runs only once when the component mounts
 
   ///tablke
 
@@ -236,7 +257,7 @@ const port = () => {
           <p className="font-golos text-[45px] text-white font-bold">
             Dashboard
           </p>
-          <span className=" mt-5">
+          <span className="mt-5">
             <div className="flex flex-wrap gap-3">
               {backdrops.map((b) => (
                 <>
@@ -245,12 +266,12 @@ const port = () => {
                       <DropdownTrigger>
                         <Button
                           variant="light"
-                          className=" bg-gradient-to-r from-[#8092F1] to-[#FF00E6]"
+                          className="bg-gradient-to-r from-[#8092F1] to-[#FF00E6]"
                         >
                           <span>
                             My Wallet(s){" "}
                             <span className="text-white font-medium">
-                              {shortenAddress(address)}
+                              {shortenAddress(currentAddress)}
                             </span>
                           </span>
                         </Button>
@@ -258,10 +279,7 @@ const port = () => {
                       <DropdownMenu aria-label="Static Actions">
                         {listOfAddresses.length > 1 &&
                           listOfAddresses.slice(1).map((item, i) => (
-                            <DropdownItem
-                              key={item}
-                              onPress={() => handleOpen(b)}
-                            >
+                            <DropdownItem key={item} onPress={() => handleAddressSelect(item)}>
                               <span>
                                 {i + 2}{" "}
                                 <span className="font-medium">
@@ -304,9 +322,7 @@ const port = () => {
                         onClear={() => console.log("input cleared")}
                         onValueChange={setValue}
                         color={!isInvalid ? "danger" : "success"}
-                        errorMessage={
-                          !isInvalid && "Please enter a valid address"
-                        }
+                        errorMessage={!isInvalid && "Please enter a valid address"}
                       />
                     </ModalBody>
                     <ModalFooter>

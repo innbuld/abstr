@@ -29,6 +29,7 @@ export default function App({ Component, pageProps }) {
     <NextUIProvider>
       <ThirdwebProvider
         activeChain="ethereum"
+        
         clientId="d62d288eae1256ac84c3e4a1c810ebe3"
         supportedWallets={[
           metamaskWallet({ recommended: true }),
