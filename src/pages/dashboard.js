@@ -177,8 +177,10 @@ const port = () => {
 
   ///tablke
 
-  const array = [1, 2, 3, 4, 5, 6];
-  const arrays2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+
+
+
 
   
 
@@ -420,8 +422,8 @@ const port = () => {
                     ${datas?.data?.balance_usd ?? "0.00"}
                   </p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
-                    <p>Text 1</p>
-                    <p>Text 2</p>
+                    {/* <p>Text 1</p>
+                    <p>Text 2</p> */}
                   </div>
                   {/* <div className="flex items-center">
       <img src="/your-image.png" alt="Image" className="mx-auto" />
