@@ -441,8 +441,8 @@ const port = () => {
                 <div>
                   <p className="text-[20px] font-golos">$16,649.973</p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
-                    <p>Text 1</p>
-                    <p>Text 2</p>
+                    {/* <p>Text 1</p>
+                    <p>Text 2</p> */}
                   </div>
                   {/* <div className="flex items-center">
       <img src="/your-image.png" alt="Image" className="mx-auto" />
@@ -464,8 +464,8 @@ const port = () => {
                     ${datass?.data?.total_realized_pnl ?? "0.00"}
                   </p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
-                    <p>Text 1</p>
-                    <p>Text 2</p>
+                    {/* <p>Text 1</p>
+                    <p>Text 2</p> */}
                   </div>
                   {/* <div className="flex items-center">
       <img src="/your-image.png" alt="Image" className="mx-auto" />
@@ -487,8 +487,8 @@ const port = () => {
                     ${datass?.data?.total_unrealized_pnl ?? "0.00"}
                   </p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
-                    <p>Text 1</p>
-                    <p>Text 2</p>
+                    {/* <p>Text 1</p>
+                    <p>Text 2</p> */}
                   </div>
                   {/* <div className="flex items-center">
       <img src="/your-image.png" alt="Image" className="mx-auto" />
@@ -570,10 +570,10 @@ const port = () => {
                     <span className="text-black">{item.asset.name}</span>
                   </div>
                 </TableCell>
-                <TableCell className="text-black">{item.price}</TableCell>
+                <TableCell className="text-black">${item.price}</TableCell>
                 <TableCell className="text-black">{item.token_balance}</TableCell>
-                <TableCell className="text-black">{item.realized_pnl}</TableCell>
-                <TableCell className="text-black">{item.unrealized_pnl}</TableCell>
+                <TableCell className="text-black">${item.realized_pnl}</TableCell>
+                <TableCell className="text-black">${item.unrealized_pnl}</TableCell>
               </TableRow>
             ))}
           </TableBody>
