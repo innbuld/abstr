@@ -37,6 +37,16 @@ export default function transaction() {
     // Remember that without a dependency array, this will run every time the component renders
   }, [address]);
 
+  useEffect(() => {
+    // Retrieve the selected address from local storage
+    const selectedAddress = localStorage.getItem("selectedAddress");
+    
+    if (selectedAddress) {
+      // Use the selected address to fetch and display data for that address
+      setCurrentAddress(selectedAddress);
+    }
+  }, []);
+
 
 
 

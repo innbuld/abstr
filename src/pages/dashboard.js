@@ -69,6 +69,7 @@ const port = () => {
 
   const handleAddressSelect = (selectedAddress) => {
     setCurrentAddress(selectedAddress);
+    localStorage.setItem("selectedAddress", selectedAddress);
   };
 
 
