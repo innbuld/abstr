@@ -57,7 +57,7 @@ export default function Navbar() {
       </div>
 
       <div className="text-white flex justify-center space-x-4">
-        <div className="text-[#7f80f0] font-poppins ">Home </div>
+        <div className="text-[#7f80f0] font-poppins "><Link href={'/'}> Home</Link> </div>
         <div> <Link href={'./dashboard'}> Dashboard </Link></div>
         <div><Link href={'./transaction'}>Transactions</Link></div>
       </div>
