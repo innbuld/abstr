@@ -47,7 +47,12 @@ const port = () => {
   const [listOfAddresses, setListOfAddresses] = useState([]);
   const [value, setValue] = useState("0xabcdefghijk12345678");
   useEffect(() => {
-    setListOfAddresses([address]);
+    const storedAddresses = localStorage.getItem("addresses");
+    if (storedAddresses) {
+      setListOfAddresses(JSON.parse(storedAddresses));
+    } else {
+      setListOfAddresses([address]);
+    }
   }, [address]);
 
   const isInvalid = useMemo(() => {
@@ -57,8 +62,8 @@ const port = () => {
 
   const addToList = () => {
     const newArray = [...listOfAddresses, value];
-    console.log(newArray);
     setListOfAddresses(newArray);
+    localStorage.setItem("addresses", JSON.stringify(newArray)); // Save to local storage
   };
 
 
