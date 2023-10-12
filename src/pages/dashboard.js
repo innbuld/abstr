@@ -44,6 +44,7 @@ import {
 
 const port = () => {
   const address = useAddress();
+  const  [graphdata, setgraphdata] =useState([])
   const [listOfAddresses, setListOfAddresses] = useState([]);
   const [value, setValue] = useState("0xabcdefghijk12345678");
   useEffect(() => {
@@ -56,6 +57,14 @@ const port = () => {
   }, [address]);
 
 
+  function timestampToFormattedDate(timestamp) {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // Adding 1 to get the correct month (0-indexed)
+    const day = date.getDate();
+    return `${day}/${month}/${year.toString().slice(2)}`;
+  }
+  
 
     // Ensure the current address is the selected one or the initial connected address
     useEffect(() => {
@@ -183,7 +192,13 @@ const handleAddressSelect = (selectedAddress) => {
         // Parse the response JSON
         const data = await response.json();
         setdata(data); //storing data here for use in frontend & back
-        console.log(data);
+        const history = data.data.balance_history.map((item, index) => ({
+          
+          date: timestampToFormattedDate(item[0]),  // Adjust the pv value as needed
+          amt: item[1]  // Adjust the amt value as needed
+        }));
+        console.log(data, data.data.balance_history);
+        setgraphdata(history)
       } else {
         // If the response status is not OK, log the error
         console.error("Error fetching wallet history:", response.statusText);
@@ -251,51 +266,51 @@ const handleAddressSelect = (selectedAddress) => {
   const data = [
     {
       name: "Page A",
-      uv: 4000,
+   
       pv: 2400,
       amt: 2400,
     },
     {
       name: "Page B",
-      uv: 3000,
+ 
       pv: 1398,
       amt: 2210,
     },
     {
       name: "Page C",
-      uv: 2000,
+    
       pv: 9800,
       amt: 2290,
     },
     {
       name: "Page D",
-      uv: 2780,
+  
       pv: 3908,
       amt: 2000,
     },
     {
       name: "Page E",
-      uv: 1890,
+    
       pv: 4800,
       amt: 2181,
     },
     {
       name: "Page F",
-      uv: 2390,
+   
       pv: 3800,
       amt: 2500,
     },
     {
       name: "Page G",
-      uv: 3490,
+ 
       pv: 4300,
       amt: 2100,
     },
   ];
 
   return (
-    <div>
-      <div className="flex justify-between items-center mt-8 px-4 md:px-10">
+    <div >
+      <div className="flex  flex-col md:flex-row justify-between items-center mt-8 px-4 md:px-10 ">
         <div className=" px-3">
           <p className="font-golos text-[45px] text-white font-bold">
             Dashboard
@@ -438,7 +453,7 @@ const handleAddressSelect = (selectedAddress) => {
         </div>
       </div>
 
-      <div className="flex flex-wrap">
+      <div className="flex flex-col md:flex-row">
         {/* Left side: Large Graph */}
         <div className="w-full md:w-2/3 p-4 md:p-6">
           <div className="h-96 rounded-lg mb-60">
@@ -446,7 +461,7 @@ const handleAddressSelect = (selectedAddress) => {
               <LineChart
                 width={500}
                 height={300}
-                data={data}
+                data={graphdata}
                 margin={{
                   top: 5,
                   right: 30,
@@ -454,18 +469,18 @@ const handleAddressSelect = (selectedAddress) => {
                   bottom: 5,
                 }}
               >
-                <XAxis dataKey="name" />
+                <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="pv"
+                  dataKey="amt"
                   stroke="
                   #9419ca"
                   activeDot={{ r: 8 }}
                 />
-                <Line type="monotone" dataKey="uv" stroke="#1FDFB8" />
+                
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -567,9 +582,9 @@ const handleAddressSelect = (selectedAddress) => {
         </div>
       </div>
 
-      <div className="flex flex-col mt-5 py-5 gap-3 px-4 font-golos min-h-[190px] text-black rounded-2xl font-medium border-1 border-[#e5e5e5]">
+      <div className="flex flex-col mt-5 py-5 gap-3 px-4 font-golos min-h-[190px] m-6 text-black rounded-2xl font-medium border-1 border-[#e5e5e5]">
         <div className="flex items-end font-golos text-[24px]">
-          <span className="font-medium text-white">Holding</span>
+          <span className="font-medium text-white mt-[-3px] ">Holding</span>
         </div>
         <div className="flex flex-row justify-between items-center">
           <span className="font-golos text-[20px] font-medium text-white">

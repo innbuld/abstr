@@ -14,7 +14,7 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         
-        right: "url('../public/right.png')",
+        right: "url('/right.png')",
         stats: "url('../public/Frame70.png')",
       },
       fontFamily: {

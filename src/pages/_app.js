@@ -40,7 +40,7 @@ export default function App({ Component, pageProps }) {
           zerionWallet({ recommended: true }),
         ]}
       >
-        <div className="bg-[#08021C] min-h-screen h-full">
+        <div className="bg-[#08021C] min-h-screen h-full w-full">
           <Navbar />
           <Component {...pageProps} />
         </div>
