@@ -195,7 +195,7 @@ const handleAddressSelect = (selectedAddress) => {
         const history = data.data.balance_history.map((item, index) => ({
           
           date: timestampToFormattedDate(item[0]),  // Adjust the pv value as needed
-          amt: item[1]  // Adjust the amt value as needed
+          Balance_history: item[1]  // Adjust the amt value as needed
         }));
         console.log(data, data.data.balance_history);
         setgraphdata(history)
@@ -475,7 +475,7 @@ const handleAddressSelect = (selectedAddress) => {
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="amt"
+                  dataKey="Balance_history"
                   stroke="
                   #9419ca"
                   activeDot={{ r: 8 }}
@@ -513,7 +513,7 @@ const handleAddressSelect = (selectedAddress) => {
             </div>
 
             {/* Box 2 */}
-            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
+            {/* <div className="bg-[#bd63ec] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -523,15 +523,15 @@ const handleAddressSelect = (selectedAddress) => {
                 <div>
                   <p className="text-[20px] font-golos">$16,649.973</p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
-                    {/* <p>Text 1</p>
-                    <p>Text 2</p> */}
+                    <p>Text 1</p>
+                    <p>Text 2</p>
                   </div>
-                  {/* <div className="flex items-center">
+                  <div className="flex items-center">
       <img src="/your-image.png" alt="Image" className="mx-auto" />
-    </div> */}
+    </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Box 3 */}
             <div className="bg-[#bd63ec] text-white rounded-lg p-4">
