@@ -55,6 +55,24 @@ const port = () => {
     }
   }, [address]);
 
+
+
+    // Ensure the current address is the selected one or the initial connected address
+    useEffect(() => {
+      const selectedAddress = localStorage.getItem("selectedAddress");
+      if (selectedAddress) {
+        if (listOfAddresses.includes(selectedAddress)) {
+          setCurrentAddress(selectedAddress);
+        } else {
+          setCurrentAddress(address);
+          localStorage.setItem("selectedAddress", address); // Reset selectedAddress
+        }
+      } else {
+        setCurrentAddress(address);
+      }
+    }, [address, listOfAddresses]);
+  
+
   // handle dele
 
   const handleDeleteAddress = (addressToDelete) => {
@@ -62,6 +80,7 @@ const port = () => {
       const updatedList = listOfAddresses.filter((item) => item !== addressToDelete);
       setListOfAddresses(updatedList);
       localStorage.setItem("addresses", JSON.stringify(updatedList)); // Update the local storage
+      localStorage.setItem("selectedAddress", address); // Reset selectedAddress
     }
   };
 
@@ -78,10 +97,14 @@ const port = () => {
   };
 
 
-  const handleAddressSelect = (selectedAddress) => {
-    setCurrentAddress(selectedAddress);
-    localStorage.setItem("selectedAddress", selectedAddress);
-  };
+  // Debugging - Check if address selection is working correctly
+const handleAddressSelect = (selectedAddress) => {
+  console.log("Selected Address:", selectedAddress); // Add this line
+  setCurrentAddress(selectedAddress);
+  localStorage.setItem("selectedAddress", selectedAddress);
+  console.log("localStorage: selectedAddress set to", selectedAddress); // Add this line
+};
+
 
 
   

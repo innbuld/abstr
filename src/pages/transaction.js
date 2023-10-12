@@ -25,7 +25,7 @@ export default function transaction() {
   //             console.log(data.data.data, data.data ,"show up") }
   //         })
 
-  const [currentAddress, setCurrentAddress] = useState("");
+  const [currentAddress, setCurrentAddress] = useState(address);
 
   useEffect(() => {
     // This code will run when the component is mounted
@@ -47,6 +47,8 @@ export default function transaction() {
     }
   }, []);
 
+  
+  
 
 
 
