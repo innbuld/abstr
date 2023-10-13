@@ -490,7 +490,7 @@ const handleAddressSelect = (selectedAddress) => {
         <div className="w-full md:w-1/3  p-4 md:p-6">
           <div className="flex flex-col space-y-4">
             {/* Box 1 */}
-            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
+            <div className="bg-[#1d1930] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -534,7 +534,7 @@ const handleAddressSelect = (selectedAddress) => {
             </div> */}
 
             {/* Box 3 */}
-            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
+            <div className="bg-[#1d1930] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -557,7 +557,7 @@ const handleAddressSelect = (selectedAddress) => {
             </div>
 
             {/* Box 4 */}
-            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
+            <div className="bg-[#1d1930] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
