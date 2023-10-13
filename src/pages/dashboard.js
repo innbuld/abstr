@@ -353,7 +353,7 @@ const handleAddressSelect = (selectedAddress) => {
                             </DropdownItem>
                           ))}
                         <DropdownItem key="new" onPress={() => handleOpen(b)}>
-                          <span className="flex flex-row gap-2 items-center ">
+                          <span className="flex flex-row gap-2 items-center  ">
                             <HiMiniPlusSmall /> Add New Account
                           </span>
                         </DropdownItem>
@@ -362,7 +362,7 @@ const handleAddressSelect = (selectedAddress) => {
                   ) : (
                     <Button
                       variant="light"
-                      className="capitalize bg-gradient-to-r from-[#8092F1] to-[#FF00E6]"
+                      className="capitalize bg-[#1d1930] text-white"
                     >
                       <HiMiniPlusSmall /> Add Account
                     </Button>
