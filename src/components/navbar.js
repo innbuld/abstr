@@ -95,13 +95,17 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <ConnectWallet
-              theme={darkTheme({ primaryButtonBg: "#d400ff" })}
-              switchToActiveChain={true}
-              modalSize={"wide"}
-              className="bg-gradient-to-r from-[#8092F1] to-[#FF00E6] "
-            />
-          </div>
+  <div
+    className="bg-gradient-to-r from-[#8092F1] to-[#FF00E6] pointer-events-none"
+  >
+    <ConnectWallet
+      theme={darkTheme({ primaryButtonBg: "#d400ff" })}
+      switchToActiveChain={true}
+      modalSize={"wide"}
+    />
+  </div>
+</div>
+
         </div>
 
         {/* Mobile Sidebar Toggle Button */}
