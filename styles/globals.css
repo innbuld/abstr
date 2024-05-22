@@ -7,3 +7,37 @@
 @tailwind utilities;
 
 
+
+
+
+
+
+/* <div className="flex items-center font-golos text-[16px]">
+            <img
+              className="mr-2"
+              src="/arbb.png"
+              width="25px"
+              alt="Arbitrum"
+            ></img>{" "}
+            Arbitrum
+          </div>
+
+          <div className="flex items-center font-golos text-[16px]">
+            <img
+              className="mr-2"
+              src="/matic.webp"
+              width="25px"
+              alt="Polygon"
+            ></img>{" "}
+            Polygon
+          </div>
+
+          <div className="flex items-center font-golos text-[16px]">
+            <img
+              className="mr-2"
+              src="/op.png"
+              width="25px"
+              alt="Optimism"
+            ></img>{" "}
+            Optimism
+          </div> */

@@ -77,7 +77,7 @@ export default function Navbar() {
       <div className="flex justify-between items-center">
         <div className="px-8">
           <div className="">
-            <img className="mr-2" src="/Frame 31.png" width="44%"></img>
+            <img className="mr-2" src="/cat1.png" width="44%"></img>
           </div>
         </div>
 

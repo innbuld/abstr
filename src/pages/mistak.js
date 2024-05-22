@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, PureComponent } from "react";
 import Navbar from "@/components/navbar";
 import MobulaData from "@/components/fetchbaldata";
 import { shortenAddress } from "@/utils/shortenAddress";
+import Web3 from "web3";
 import {
   LineChart,
   Line,
@@ -44,54 +45,50 @@ import {
 
 const port = () => {
   const address = useAddress();
-  const  [graphdata, setgraphdata] =useState([])
   const [listOfAddresses, setListOfAddresses] = useState([]);
   const [value, setValue] = useState("0xabcdefghijk12345678");
   useEffect(() => {
-    const storedAddresses = localStorage.getItem("addresses");
-    if (storedAddresses) {
-      setListOfAddresses(JSON.parse(storedAddresses));
-    } else {
-      setListOfAddresses([address]);
-    }
+    setListOfAddresses([address]);
   }, [address]);
 
+  // chain 
 
-  function timestampToFormattedDate(timestamp) {
-    const date = new Date(timestamp);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1; // Adding 1 to get the correct month (0-indexed)
-    const day = date.getDate();
-    return `${day}/${month}/${year.toString().slice(2)}`;
-  }
-  
+  const [selectedChain, setSelectedChain] = useState('All Chain');
+  const chainRPCs = {
+    'All Chain': '', // Replace with your default RPC URL
+    Ethereum: 'https://ethereum.rpc.thirdweb.com',
+    BNB: 'https://binance.rpc.thirdweb.com',
+    Matic: 'https://polygon.rpc.thirdweb.com',
+    Optimism: 'https://mainnet.optimism.io',
+    Avax: 'https://avalanche.rpc.thirdweb.com',
+    Arbitrum: 'https://arbitrum.rpc.thirdweb.com',
+    Base: 'https://base.rpc.thirdweb.com', // Add the RPC URL for the 'Base' chain
+  };
 
-    // Ensure the current address is the selected one or the initial connected address
-    useEffect(() => {
-      const selectedAddress = localStorage.getItem("selectedAddress");
-      if (selectedAddress) {
-        if (listOfAddresses.includes(selectedAddress)) {
-          setCurrentAddress(selectedAddress);
-        } else {
-          setCurrentAddress(address);
-          localStorage.setItem("selectedAddress", address); // Reset selectedAddress
-        }
-      } else {
-        setCurrentAddress(address);
+
+  const handleChainSelect = async (selectedKey) => {
+    setSelectedChain(selectedKey);
+
+    // You can now use the selectedKey to fetch the corresponding RPC URL
+    const selectedRPC = chainRPCs[selectedKey];
+
+    if (selectedRPC) {
+      try {
+        // Create a Web3 instance connected to the selected RPC
+        const Web3 = new Web3(new Web3.providers.HttpProvider(selectedRPC));
+
+        // You can now use the 'web3' instance to interact with the selected chain
+        // For example, get the current block number:
+        const blockNumber = await Web3.eth.getBlockNumber();
+        console.log(`Connected to ${selectedChain}, Block Number: ${blockNumber}`);
+      } catch (error) {
+        console.error(`Error connecting to ${selectedChain}: ${error.message}`);
       }
-    }, [address, listOfAddresses]);
-  
-
-  // handle dele
-
-  const handleDeleteAddress = (addressToDelete) => {
-    if (window.confirm(`Are you sure you want to delete address ${addressToDelete}?`)) {
-      const updatedList = listOfAddresses.filter((item) => item !== addressToDelete);
-      setListOfAddresses(updatedList);
-      localStorage.setItem("addresses", JSON.stringify(updatedList)); // Update the local storage
-      localStorage.setItem("selectedAddress", address); // Reset selectedAddress
     }
   };
+
+
+
 
 
   const isInvalid = useMemo(() => {
@@ -101,40 +98,11 @@ const port = () => {
 
   const addToList = () => {
     const newArray = [...listOfAddresses, value];
+    console.log(newArray);
     setListOfAddresses(newArray);
-    localStorage.setItem("addresses", JSON.stringify(newArray)); // Save to local storage
   };
 
-
-  // Debugging - Check if address selection is working correctly
-const handleAddressSelect = (selectedAddress) => {
-  console.log("Selected Address:", selectedAddress); // Add this line
-  setCurrentAddress(selectedAddress);
-  localStorage.setItem("selectedAddress", selectedAddress);
-  console.log("localStorage: selectedAddress set to", selectedAddress); // Add this line
-};
-
-
-
-  
-
-
-  const [currentAddress, setCurrentAddress] = useState("");
-
-  useEffect(() => {
-    // This code will run when the component is mounted
-
-    setCurrentAddress(address);
-    console.log("Component mounted", address);
-
-    // You can perform any side effects or tasks here
-    // Remember that without a dependency array, this will run every time the component renders
-  }, [address]);
-
-
-
-  
-  const [selectedKeys, setSelectedKeys] = useState(new Set([" Chain"]));
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["All Chain"]));
 
   const [selectedKe, setSelectedKe] = useState(new Set(["$1"])); // for asset tbl 1
 
@@ -175,7 +143,7 @@ const handleAddressSelect = (selectedAddress) => {
 
   // Define the function to fetch wallet history
   const getWalletHistory = async () => {
-    const url = `https://api.app-mobula.com/api/1/wallet/history?wallet=${currentAddress}`; //
+    const url = `https://api.app-mobula.com/api/1/wallet/history?wallet=${address}`; //
     const options = {
       method: "GET",
       headers: {
@@ -192,13 +160,7 @@ const handleAddressSelect = (selectedAddress) => {
         // Parse the response JSON
         const data = await response.json();
         setdata(data); //storing data here for use in frontend & back
-        const history = data.data.balance_history.map((item, index) => ({
-          
-          date: timestampToFormattedDate(item[0]),  // Adjust the pv value as needed
-          Balance_history: item[1]  // Adjust the amt value as needed
-        }));
-        console.log(data, data.data.balance_history);
-        setgraphdata(history)
+        console.log(data);
       } else {
         // If the response status is not OK, log the error
         console.error("Error fetching wallet history:", response.statusText);
@@ -212,7 +174,7 @@ const handleAddressSelect = (selectedAddress) => {
   // Use the useEffect hook to call the getWalletHistory function when the component mounts
   useEffect(() => {
     getWalletHistory();
-  }, [currentAddress]); // Empty dependency array ensures that the effect runs only once when the component mounts, anytime address get changes, it'll run to get connected wall
+  }, [address]); // Empty dependency array ensures that the effect runs only once when the component mounts, anytime address get changes, it'll run to get connected wall
 
   // portfolio
 
@@ -220,8 +182,7 @@ const handleAddressSelect = (selectedAddress) => {
 
   // Define the function to fetch wallet portfolio
   const getpnl = async () => {
-    const url =
-    `https://api.app-mobula.com/api/1/wallet/portfolio?wallet=${currentAddress}&pnl=true`;
+    const url = `https://api.app-mobula.com/api/1/wallet/portfolio?wallet=${address}&pnl=true`;
     const options = {
       method: "GET",
       headers: {
@@ -252,70 +213,63 @@ const handleAddressSelect = (selectedAddress) => {
   // Use the useEffect hook to call the getWalletHistory function when the component mounts
   useEffect(() => {
     getpnl();
-  }, [currentAddress]); // Empty dependency array ensures that the effect runs only once when the component mounts
+  }, [address]); // Empty dependency array ensures that the effect runs only once when the component mounts
 
   ///tablke
-
-
-
-
-
-
-  
 
   const data = [
     {
       name: "Page A",
-   
+      uv: 4000,
       pv: 2400,
       amt: 2400,
     },
     {
       name: "Page B",
- 
+      uv: 3000,
       pv: 1398,
       amt: 2210,
     },
     {
       name: "Page C",
-    
+      uv: 2000,
       pv: 9800,
       amt: 2290,
     },
     {
       name: "Page D",
-  
+      uv: 2780,
       pv: 3908,
       amt: 2000,
     },
     {
       name: "Page E",
-    
+      uv: 1890,
       pv: 4800,
       amt: 2181,
     },
     {
       name: "Page F",
-   
+      uv: 2390,
       pv: 3800,
       amt: 2500,
     },
     {
       name: "Page G",
- 
+      uv: 3490,
       pv: 4300,
       amt: 2100,
     },
   ];
 
   return (
-    <div >
-      <div className="flex  flex-col md:flex-row justify-between items-center mt-8 px-4 md:px-10 ">
+    <div>
+      <div className="flex justify-between items-center mt-8 px-4 md:px-10">
         <div className=" px-3">
           <p className="font-golos text-[45px] text-white font-bold">
             Dashboard
           </p>
-          <span className="mt-5">
+          <span className=" mt-5">
             <div className="flex flex-wrap gap-3">
               {backdrops.map((b) => (
                 <>
@@ -324,12 +278,12 @@ const handleAddressSelect = (selectedAddress) => {
                       <DropdownTrigger>
                         <Button
                           variant="light"
-                          className="bg-gradient-to-r from-[#8092F1] to-[#FF00E6]"
+                          className=" bg-gradient-to-r from-[#8092F1] to-[#FF00E6]"
                         >
                           <span>
                             My Wallet(s){" "}
                             <span className="text-white font-medium">
-                              {shortenAddress(currentAddress)}
+                              {shortenAddress(address)}
                             </span>
                           </span>
                         </Button>
@@ -337,23 +291,20 @@ const handleAddressSelect = (selectedAddress) => {
                       <DropdownMenu aria-label="Static Actions">
                         {listOfAddresses.length > 1 &&
                           listOfAddresses.slice(1).map((item, i) => (
-                            <DropdownItem key={item} onPress={() => handleAddressSelect(item)}>
+                            <DropdownItem
+                              key={item}
+                              onPress={() => handleOpen(b)}
+                            >
                               <span>
                                 {i + 2}{" "}
                                 <span className="font-medium">
                                   {shortenAddress(item)}
                                 </span>
-                                <button
-                        onClick={() => handleDeleteAddress(item)}
-                        className="ml-2 text-red-500"
-                      >
-                        Delete
-                      </button>
                               </span>
                             </DropdownItem>
                           ))}
                         <DropdownItem key="new" onPress={() => handleOpen(b)}>
-                          <span className="flex flex-row gap-2 items-center  ">
+                          <span className="flex flex-row gap-2 items-center ">
                             <HiMiniPlusSmall /> Add New Account
                           </span>
                         </DropdownItem>
@@ -362,7 +313,7 @@ const handleAddressSelect = (selectedAddress) => {
                   ) : (
                     <Button
                       variant="light"
-                      className="capitalize bg-[#1d1930] text-white"
+                      className="capitalize bg-gradient-to-r from-[#8092F1] to-[#FF00E6]"
                     >
                       <HiMiniPlusSmall /> Add Account
                     </Button>
@@ -386,7 +337,9 @@ const handleAddressSelect = (selectedAddress) => {
                         onClear={() => console.log("input cleared")}
                         onValueChange={setValue}
                         color={!isInvalid ? "danger" : "success"}
-                        errorMessage={!isInvalid && "Please enter a valid address"}
+                        errorMessage={
+                          !isInvalid && "Please enter a valid address"
+                        }
                       />
                     </ModalBody>
                     <ModalFooter>
@@ -411,44 +364,37 @@ const handleAddressSelect = (selectedAddress) => {
         </div>
 
         <div>
-          <Dropdown className="flex flex-row justify-between items-center">
-            <DropdownTrigger>
-              <Button
-                variant="none"
-                className="capitalize rounded-full hover:bg-[#525b8b] text-white font-golos text-[16px]"
-              >
-                <AiFillCodepenCircle /> {selectedValue} <RiArrowDropDownLine />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Single selection example"
-              variant="flat"
-              disallowEmptySelection
-              selectionMode="single"
-              selectedKeys={selectedKeys}
-              onSelectionChange={setSelectedKeys}
-              overflow-y-scroll
-            >
-              <DropdownItem
-                key="Chain"
-                className="flex flex-row justify-between items-center"
-              >
-                {" "}
-                 Chain
-              </DropdownItem>
+        <Dropdown className="flex flex-row justify-between items-center">
+      <DropdownTrigger>
+        <Button
+          variant="none"
+          className="capitalize rounded-full hover:bg-[#525b8b] text-white font-golos text-[16px]"
+        >
+          {selectedChain} <RiArrowDropDownLine />
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="Single selection example"
+        variant="flat"
+        disallowEmptySelection
+        selectionMode="single"
+        selectedKeys={[selectedChain]}
+        onSelectionChange={(keys) => handleChainSelect(keys[0])}
+        overflow-y-scroll
+      >
+        {Object.keys(chainRPCs).map((chain) => (
+          <DropdownItem key={chain} className="flex flex-row justify-between items-center">
+            {chain}
+          </DropdownItem>
+        ))}
+      </DropdownMenu>
+    </Dropdown>
+  
 
-              <DropdownItem key="Solana" className="">
-                {" "}
-                
-                Solana
-              </DropdownItem>
-              
-            </DropdownMenu>
-          </Dropdown>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-wrap">
         {/* Left side: Large Graph */}
         <div className="w-full md:w-2/3 p-4 md:p-6">
           <div className="h-96 rounded-lg mb-60">
@@ -456,7 +402,7 @@ const handleAddressSelect = (selectedAddress) => {
               <LineChart
                 width={500}
                 height={300}
-                data={graphdata}
+                data={data}
                 margin={{
                   top: 5,
                   right: 30,
@@ -464,18 +410,18 @@ const handleAddressSelect = (selectedAddress) => {
                   bottom: 5,
                 }}
               >
-                <XAxis dataKey="date" />
+                <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="Balance_history"
+                  dataKey="pv"
                   stroke="
                   #9419ca"
                   activeDot={{ r: 8 }}
                 />
-                
+                <Line type="monotone" dataKey="uv" stroke="#1FDFB8" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -485,7 +431,7 @@ const handleAddressSelect = (selectedAddress) => {
         <div className="w-full md:w-1/3  p-4 md:p-6">
           <div className="flex flex-col space-y-4">
             {/* Box 1 */}
-            <div className="bg-[#1d1930] text-white rounded-lg p-4">
+            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -508,7 +454,7 @@ const handleAddressSelect = (selectedAddress) => {
             </div>
 
             {/* Box 2 */}
-            {/* <div className="bg-[#bd63ec] text-white rounded-lg p-4">
+            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -518,18 +464,18 @@ const handleAddressSelect = (selectedAddress) => {
                 <div>
                   <p className="text-[20px] font-golos">$16,649.973</p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
-                    <p>Text 1</p>
-                    <p>Text 2</p>
+                    {/* <p>Text 1</p>
+                    <p>Text 2</p> */}
                   </div>
-                  <div className="flex items-center">
+                  {/* <div className="flex items-center">
       <img src="/your-image.png" alt="Image" className="mx-auto" />
-    </div>
+    </div> */}
                 </div>
               </div>
-            </div> */}
+            </div>
 
             {/* Box 3 */}
-            <div className="bg-[#1d1930] text-white rounded-lg p-4">
+            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -552,7 +498,7 @@ const handleAddressSelect = (selectedAddress) => {
             </div>
 
             {/* Box 4 */}
-            <div className="bg-[#1d1930] text-white rounded-lg p-4">
+            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -577,15 +523,17 @@ const handleAddressSelect = (selectedAddress) => {
         </div>
       </div>
 
-      <div className="flex flex-col mt-5 py-5 gap-3 px-4 font-golos min-h-[190px] m-6 text-black rounded-2xl font-medium border-1 border-[#e5e5e5]">
+      <div className="flex flex-col mt-5 py-5 gap-3 px-4 font-golos min-h-[190px] text-black rounded-2xl font-medium border-1 border-[#e5e5e5]">
         <div className="flex items-end font-golos text-[24px]">
-          <span className="font-medium text-white mt-[-3px] ">Holding</span>
+          <span className="font-medium text-white">Holding</span>
         </div>
         <div className="flex flex-row justify-between items-center">
           <span className="font-golos text-[20px] font-medium text-white">
             Token
           </span>
-          <span className="font-golos font-medium text-white">${datas?.data?.balance_usd ?? "0.00"}</span>
+          <span className="font-golos font-medium text-white">
+            ${datas?.data?.balance_usd ?? "0.00"}
+          </span>
         </div>
         <div className="flex flex-row justify-between items-center">
           <span className=""></span>
@@ -617,45 +565,50 @@ const handleAddressSelect = (selectedAddress) => {
           </span> */}
         </div>
 
-       
         <div className="flex flex-col bg-table ">
-        <Table
-          selectionMode="single"
-          defaultSelectedKeys={["2"]}
-          aria-label="Example static collection table"
-          className="bg-table"
-        >
-          <TableHeader>
-            <TableColumn width="40%">ASSETS</TableColumn>
-            <TableColumn typeof="number">PRICE</TableColumn>
-            <TableColumn>AMOUNT</TableColumn>
-            <TableColumn>REALIZED PNL</TableColumn>
-            <TableColumn>UNREALIZED PNL</TableColumn>
-          </TableHeader>
-          <TableBody className="text-black">
-            {datass?.data?.assets?.map((item, i) => (
-              <TableRow key={i}>
-                <TableCell>
-                <div className="flex items-center space-x-2">
-                    <img
-                      src={item.asset.logo}
-                      alt={item.asset.name}
-                      width="32"
-                      height="32"
-                      className="rounded-lg"
-                    />
-                    <span className="text-black">{item.asset.name}</span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-black">${item.price}</TableCell>
-                <TableCell className="text-black">{item.token_balance}</TableCell>
-                <TableCell className="text-black">${item.realized_pnl}</TableCell>
-                <TableCell className="text-black">${item.unrealized_pnl}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          <Table
+            selectionMode="single"
+            defaultSelectedKeys={["2"]}
+            aria-label="Example static collection table"
+            className="bg-table"
+          >
+            <TableHeader>
+              <TableColumn width="40%">ASSETS</TableColumn>
+              <TableColumn typeof="number">PRICE</TableColumn>
+              <TableColumn>AMOUNT</TableColumn>
+              <TableColumn>REALIZED PNL</TableColumn>
+              <TableColumn>UNREALIZED PNL</TableColumn>
+            </TableHeader>
+            <TableBody className="text-black">
+              {datass?.data?.assets?.map((item, i) => (
+                <TableRow key={i}>
+                  <TableCell>
+                    <div className="flex items-center space-x-2">
+                      <img
+                        src={item.asset.logo}
+                        alt={item.asset.name}
+                        width="32"
+                        height="32"
+                        className="rounded-lg"
+                      />
+                      <span className="text-black">{item.asset.name}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-black">${item.price}</TableCell>
+                  <TableCell className="text-black">
+                    {item.token_balance}
+                  </TableCell>
+                  <TableCell className="text-black">
+                    ${item.realized_pnl}
+                  </TableCell>
+                  <TableCell className="text-black">
+                    ${item.unrealized_pnl}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );
