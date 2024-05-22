@@ -52,7 +52,7 @@ export default function Home() {
       <div class="flex justify-center items-center  font-golos text-[16px] h-full">
   <img
     class="inline mr-1"
-    src="/ethr.png"
+    src="/solana_logo.png"
     width="25px"
     alt="Ethereum"
   />
