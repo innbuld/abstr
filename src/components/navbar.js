@@ -148,7 +148,7 @@ export default function Navbar() {
         <div className="text-white p-2">
           <Link href="/transaction">Transactions</Link>
         </div>
-        <div className="p-2">
+        <div className="p-2 pointer-events-none">
           <ConnectWallet
             theme={darkTheme({ primaryButtonBg: "#d400ff" })}
             switchToActiveChain={true}
