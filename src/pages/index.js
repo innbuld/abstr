@@ -52,9 +52,9 @@ export default function Home() {
       <div class="flex justify-center items-center  font-golos text-[16px] h-full">
   <img
     class="inline mr-1"
-    src="/solana_logo.png"
+    src="/Solana_logo.png"
     width="25px"
-    alt="Ethereum"
+    alt="Solana"
   />
   <span class="inline">Solana</span>
 </div>
