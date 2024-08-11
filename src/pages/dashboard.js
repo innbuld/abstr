@@ -134,7 +134,7 @@ const handleAddressSelect = (selectedAddress) => {
 
 
   
-  const [selectedKeys, setSelectedKeys] = useState(new Set([" Chain"]));
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["All Chain"]));
 
   const [selectedKe, setSelectedKe] = useState(new Set(["$1"])); // for asset tbl 1
 
@@ -195,7 +195,7 @@ const handleAddressSelect = (selectedAddress) => {
         const history = data.data.balance_history.map((item, index) => ({
           
           date: timestampToFormattedDate(item[0]),  // Adjust the pv value as needed
-          Balance_history: item[1]  // Adjust the amt value as needed
+          amt: item[1]  // Adjust the amt value as needed
         }));
         console.log(data, data.data.balance_history);
         setgraphdata(history)
@@ -353,7 +353,7 @@ const handleAddressSelect = (selectedAddress) => {
                             </DropdownItem>
                           ))}
                         <DropdownItem key="new" onPress={() => handleOpen(b)}>
-                          <span className="flex flex-row gap-2 items-center  ">
+                          <span className="flex flex-row gap-2 items-center ">
                             <HiMiniPlusSmall /> Add New Account
                           </span>
                         </DropdownItem>
@@ -362,7 +362,7 @@ const handleAddressSelect = (selectedAddress) => {
                   ) : (
                     <Button
                       variant="light"
-                      className="capitalize bg-[#1d1930] text-white"
+                      className="capitalize bg-gradient-to-r from-[#8092F1] to-[#FF00E6]"
                     >
                       <HiMiniPlusSmall /> Add Account
                     </Button>
@@ -430,19 +430,24 @@ const handleAddressSelect = (selectedAddress) => {
               overflow-y-scroll
             >
               <DropdownItem
-                key="Chain"
+                key="All_Chain"
                 className="flex flex-row justify-between items-center"
               >
                 {" "}
-                 Chain
+                All Chain
               </DropdownItem>
 
-              <DropdownItem key="Solana" className="">
+              <DropdownItem key="Ethereum" className="">
                 {" "}
-                
-                Solana
+                <LiaEthereum />
+                Ethereum
               </DropdownItem>
-              
+              <DropdownItem key="date"> BNB</DropdownItem>
+              <DropdownItem key="matic">Matic</DropdownItem>
+              <DropdownItem key="optimism">Optimism</DropdownItem>
+              <DropdownItem key="avax">Avax</DropdownItem>
+              <DropdownItem key="arbitrum">Arbitrum</DropdownItem>
+              <DropdownItem key="base">Base</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
@@ -470,7 +475,7 @@ const handleAddressSelect = (selectedAddress) => {
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="Balance_history"
+                  dataKey="amt"
                   stroke="
                   #9419ca"
                   activeDot={{ r: 8 }}
@@ -485,7 +490,7 @@ const handleAddressSelect = (selectedAddress) => {
         <div className="w-full md:w-1/3  p-4 md:p-6">
           <div className="flex flex-col space-y-4">
             {/* Box 1 */}
-            <div className="bg-[#1d1930] text-white rounded-lg p-4">
+            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -508,7 +513,7 @@ const handleAddressSelect = (selectedAddress) => {
             </div>
 
             {/* Box 2 */}
-            {/* <div className="bg-[#bd63ec] text-white rounded-lg p-4">
+            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -518,18 +523,18 @@ const handleAddressSelect = (selectedAddress) => {
                 <div>
                   <p className="text-[20px] font-golos">$16,649.973</p>
                   <div className="flex space-x-2 mt-3 text-[10px] font-golos ml-2">
-                    <p>Text 1</p>
-                    <p>Text 2</p>
+                    {/* <p>Text 1</p>
+                    <p>Text 2</p> */}
                   </div>
-                  <div className="flex items-center">
+                  {/* <div className="flex items-center">
       <img src="/your-image.png" alt="Image" className="mx-auto" />
-    </div>
+    </div> */}
                 </div>
               </div>
-            </div> */}
+            </div>
 
             {/* Box 3 */}
-            <div className="bg-[#1d1930] text-white rounded-lg p-4">
+            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">
@@ -552,7 +557,7 @@ const handleAddressSelect = (selectedAddress) => {
             </div>
 
             {/* Box 4 */}
-            <div className="bg-[#1d1930] text-white rounded-lg p-4">
+            <div className="bg-[#bd63ec] text-white rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-lg mb-8 font-golos text-[24px]">

@@ -77,7 +77,7 @@ export default function Navbar() {
       <div className="flex justify-between items-center">
         <div className="px-8">
           <div className="">
-            <img className="mr-2" src="/cat3.png" width="44%"></img>
+            <img className="mr-2" src="/Frame 31.png" width="44%"></img>
           </div>
         </div>
 
@@ -95,17 +95,13 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-2">
-  <div
-    className="bg-gradient-to-r from-[#8092F1] to-[#FF00E6] pointer-events-none"
-  >
-    <ConnectWallet
-      theme={darkTheme({ primaryButtonBg: "#d400ff" })}
-      switchToActiveChain={true}
-      modalSize={"wide"}
-    />
-  </div>
-</div>
-
+            <ConnectWallet
+              theme={darkTheme({ primaryButtonBg: "#d400ff" })}
+              switchToActiveChain={true}
+              modalSize={"wide"}
+              className="bg-gradient-to-r from-[#8092F1] to-[#FF00E6] "
+            />
+          </div>
         </div>
 
         {/* Mobile Sidebar Toggle Button */}
@@ -148,7 +144,7 @@ export default function Navbar() {
         <div className="text-white p-2">
           <Link href="/transaction">Transactions</Link>
         </div>
-        <div className="p-2 pointer-events-none">
+        <div className="p-2">
           <ConnectWallet
             theme={darkTheme({ primaryButtonBg: "#d400ff" })}
             switchToActiveChain={true}

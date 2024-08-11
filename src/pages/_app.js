@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }) {
       <ThirdwebProvider
         activeChain="ethereum"
         
-        clientId="d62d288eae1256ac84c3e4a1c810ebe3"
+        clientId="c9c09ca461b5928e185ae2f3ace825ca"
         supportedWallets={[
           metamaskWallet({ recommended: true }),
           coinbaseWallet(),
